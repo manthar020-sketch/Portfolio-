@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manthar Ali — CAD Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0f1e;
+    --navy2: #0d1428;
+    --navy3: #111a35;
+    --navy4: #162040;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --gold3: #f5dfa0;
+    --white: #f0f4ff;
+    --muted: #8899bb;
+    --border: rgba(201,168,76,0.2);
+    --card-bg: rgba(22,32,64,0.7);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+  }
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,15,30,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold); border-radius: 2rem;
+    padding: 0.3rem 1rem; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800; line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 600px; margin: 0 auto 2rem;
+  }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+  .pill {
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.05em;
+    background: var(--navy3); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 2rem; padding: 0.35rem 0.9rem;
+  }
+  /* SECTION */
+  .section { padding: 3rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem; font-weight: 700; color: var(--white);
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  /* EDIT TOOLBAR */
+  .edit-bar {
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+  }
+  .edit-bar span { font-size: 0.75rem; color: var(--gold); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .edit-btn {
+    font-size: 0.75rem; padding: 0.3rem 0.75rem;
+    background: var(--navy4); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 0.3rem; cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .edit-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .edit-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  /* PROJECT CARD */
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .project-card.edit-mode { border-color: var(--gold); }
+  .project-card-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .project-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 700; color: var(--gold);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 700; color: var(--white);
+    outline: none; border: none; background: transparent;
+    cursor: text; width: 100%;
+  }
+  .project-title[contenteditable="true"] {
+    border-bottom: 1px dashed var(--gold);
+    padding-bottom: 2px;
+  }
+  .project-desc {
+    font-size: 0.88rem; color: var(--muted); line-height: 1.6;
+    outline: none; border: none; background: transparent;
+    cursor: text; width: 100%;
+    margin-top: 0.3rem;
+  }
+  .project-desc[contenteditable="true"] {
+    border-bottom: 1px dashed rgba(201,168,76,0.4);
+    padding-bottom: 2px;
+  }
+  .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .tag {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold3); border-radius: 0.25rem; padding: 0.2rem 0.6rem;
+  }
+  /* IMAGE GRID */
+  .image-grid {
+    padding: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .img-slot {
+    position: relative;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    aspect-ratio: 4/3;
+    cursor: default;
+  }
+  .img-slot img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .img-slot:hover img { transform: scale(1.04); }
+  .img-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(10,15,30,0.9));
+    color: var(--muted); font-size: 0.7rem; font-weight: 500;
+    padding: 1.5rem 0.6rem 0.5rem;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  /* EDIT MODE image controls */
+  .img-controls {
+    display: none;
+    position: absolute; top: 0.4rem; right: 0.4rem;
+    gap: 0.3rem;
+  }
+  .edit-mode .img-controls { display: flex; }
+  .img-btn {
+    font-size: 0.65rem; padding: 0.2rem 0.45rem;
+    background: var(--navy); border: 1px solid var(--gold);
+    color: var(--gold); border-radius: 0.25rem; cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .img-btn:hover { background: var(--gold); color: var(--navy); }
+  .add-img-slot {
+    border-radius: 0.6rem;
+    border: 2px dashed rgba(201,168,76,0.4);
+    aspect-ratio: 4/3;
+    display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    background: rgba(201,168,76,0.03);
+  }
+  .edit-mode .add-img-slot { display: flex; }
+  .add-img-slot:hover { border-color: var(--gold); }
+  .add-img-slot span { font-size: 0.78rem; color: var(--muted); }
+  .add-img-slot .plus { font-size: 1.8rem; color: var(--gold); line-height: 1; }
+  /* CARD CONTROLS in edit mode */
+  .card-controls {
+    display: none;
+    position: absolute; top: 0.75rem; right: 1rem;
+    gap: 0.4rem;
+  }
+  .edit-mode-global .project-card .card-controls { display: flex; }
+  .card-btn {
+    font-size: 0.7rem; padding: 0.25rem 0.6rem;
+    background: var(--navy); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 0.25rem; cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+  }
+  .card-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .card-btn.danger:hover { border-color: #e24b4a; color: #e24b4a; }
+  /* ADD PROJECT */
+  .add-project-btn {
+    display: none;
+    width: 100%; padding: 1.2rem;
+    background: transparent; border: 2px dashed rgba(201,168,76,0.4);
+    color: var(--muted); border-radius: 1rem; cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 500;
+    transition: all 0.2s; margin-bottom: 2rem;
+  }
+  .edit-mode-global .add-project-btn { display: block; }
+  .add-project-btn:hover { border-color: var(--gold); color: var(--gold); }
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.92);
+    align-items: center; justify-content: center;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 90vw; max-height: 90vh;
+    border-radius: 0.5rem; object-fit: contain;
+  }
+  .lightbox-close {
+    position: absolute; top: 1rem; right: 1.5rem;
+    font-size: 2rem; color: var(--white); cursor: pointer;
+    background: none; border: none; line-height: 1;
+  }
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  @media(max-width:600px){ .about-grid { grid-template-columns:1fr; } }
+  .about-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.5rem;
+  }
+  .about-card h3 { font-family:'Syne',sans-serif; font-size:1rem; color:var(--gold); margin-bottom:0.8rem; font-weight:700; }
+  .about-card p, .about-card li { font-size:0.88rem; color:var(--muted); line-height:1.7; }
+  .about-card ul { padding-left: 1.2rem; }
+  .about-card li { margin-bottom: 0.3rem; }
+  /* CONTACT */
+  .contact-bar {
+    background: var(--navy3); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 2rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .contact-bar h3 { font-family:'Syne',sans-serif; font-size:1.3rem; color:var(--white); font-weight:700; }
+  .contact-bar p { font-size:0.85rem; color:var(--muted); margin-top:0.3rem; }
+  .contact-links { display:flex; gap:1rem; flex-wrap:wrap; }
+  .contact-link {
+    font-size:0.82rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+    padding:0.5rem 1.2rem; border-radius:0.4rem; text-decoration:none;
+    transition:all 0.2s;
+  }
+  .contact-link.primary { background:var(--gold); color:var(--navy); }
+  .contact-link.primary:hover { background:var(--gold2); }
+  .contact-link.secondary { border:1px solid var(--border); color:var(--muted); }
+  .contact-link.secondary:hover { border-color:var(--gold); color:var(--gold); }
+  /* FOOTER */
+  footer {
+    text-align:center; padding:2rem; font-size:0.78rem; color:var(--muted);
+    border-top:1px solid var(--border); margin-top:2rem;
+  }
+  /* DRAG */
+  .project-card.dragging { opacity:0.4; }
+  .project-card.drag-over { border-color:var(--gold2); }
+  .drag-handle {
+    cursor:grab; font-size:0.75rem; color:var(--muted);
+    padding:0.25rem 0.6rem; border:1px solid var(--border);
+    border-radius:0.25rem; display:none;
+    user-select:none;
+  }
+  .edit-mode-global .project-card .drag-handle { display:block; }
+  /* Upload hidden */
+  .file-upload-input { display:none; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.7s cubic-bezier(.22,.68,0,1.2), transform 0.7s cubic-bezier(.22,.68,0,1.2);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* staggered children */
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s cubic-bezier(.22,.68,0,1.2), transform 0.6s cubic-bezier(.22,.68,0,1.2);
+  }
+  .reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0s; }
+  .reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.08s; }
+  .reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.16s; }
+  .reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.24s; }
+  .reveal-stagger.visible > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:0.32s; }
+  .reveal-stagger.visible > *:nth-child(n+6) { opacity:1; transform:translateY(0); transition-delay:0.4s; }
+
+  /* hero specific — fade up with extra delay cascade */
+  .hero-tag   { opacity:0; transform:translateY(20px); transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s; }
+  .hero h1    { opacity:0; transform:translateY(24px); transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s; }
+  .hero p     { opacity:0; transform:translateY(20px); transition: opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s; }
+  .hero-pills { opacity:0; transform:translateY(16px); transition: opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s; }
+  .hero-anim-done .hero-tag,
+  .hero-anim-done .hero h1,
+  .hero-anim-done .hero p,
+  .hero-anim-done .hero-pills { opacity:1; transform:translateY(0); }
+
+  /* image slots fade in from slightly below */
+  .img-slot {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    transition: opacity 0.55s ease, transform 0.55s ease, border-color 0.2s;
+  }
+  .img-slot.img-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  /* add slot stays invisible but clickable */
+  .add-img-slot { opacity:1 !important; transform:none !important; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MA.</div>
+  <div class="nav-links">
+    <a href="#portfolio">Portfolio</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Mechatronics Engineer &amp; CAD Designer</div>
+  <h1>Manthar <span>Ali</span></h1>
+  <p>SolidWorks-based commercial equipment design, 3D modelling &amp; engineering drawings. B.E. Mechatronics — MUET Jamshoro, 2025.</p>
+  <div class="hero-pills">
+    <span class="pill">SolidWorks</span>
+    <span class="pill">Sheet Metal Design</span>
+    <span class="pill">Solid Modelling</span>
+    <span class="pill">Assembly & BOM</span>
+    <span class="pill">GD&T</span>
+    <span class="pill">DFM</span>
+  </div>
+</section>
+
+<section class="section" id="portfolio">
+  <div class="section-header reveal">
+    <h2>Projects</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="edit-bar reveal">
+    <span>✦ Edit Mode</span>
+    <button class="edit-btn" id="toggle-edit" onclick="toggleEditMode()">Enable Editing</button>
+    <span style="font-size:0.72rem;color:var(--muted);font-weight:400">↑ Enable to rename projects, reorder, add/remove images &amp; sections</span>
+  </div>
+
+  <div id="projects-container">
+
+    <!-- PROJECT 1 -->
+    <div class="project-card reveal" data-id="1" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 01</div>
+          <div class="project-title" contenteditable="false">L-Shape Under Counter Unit</div>
+          <div class="project-desc" contenteditable="false">Commercial kitchen L-shape under-counter work station with swing doors. Fabricated in stainless steel with full dimensioned engineering drawing.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">Assembly</span><span class="tag">Kitchen Equipment</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-1">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 141221.jpg" alt="L-Shape Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 142408.jpg" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 142442.jpg" alt="3D Front View">
+          <div class="img-label">3D Model — Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-1')">
+          <span class="plus">+</span>
+          <span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-card reveal" data-id="2" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 02</div>
+          <div class="project-title" contenteditable="false">Under Counter Unit — Drawers & Door</div>
+          <div class="project-desc" contenteditable="false">Stainless steel under-counter cabinet with three drawers on the left and a single swing door on the right. Full multi-view engineering drawing included.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">Kitchen Equipment</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-2">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (27).png" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (28).png" alt="3D Front View">
+          <div class="img-label">3D Model — Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (48).png" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-2')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-card reveal" data-id="3" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 03</div>
+          <div class="project-title" contenteditable="false">Sliding Door Under Counter Cabinet</div>
+          <div class="project-desc" contenteditable="false">Under-counter stainless steel cabinet with twin sliding doors. Dimensioned drawing with section views and BOM table.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">BOM</span><span class="tag">Kitchen Equipment</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-3">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 140958.png" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 144600.jpg" alt="3D Front View">
+          <div class="img-label">3D Model — Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (75).png" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-3')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="project-card reveal" data-id="4" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 04</div>
+          <div class="project-title" contenteditable="false">Wall-Mounted Storage Cabinet</div>
+          <div class="project-desc" contenteditable="false">Overhead wall-mounted stainless steel cabinet with upper shelf compartments and lower swing doors. Includes exploded assembly view and engineering drawing.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Assembly</span><span class="tag">Exploded View</span><span class="tag">Kitchen Equipment</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-4">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (33).png" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (34).png" alt="Exploded View">
+          <div class="img-label">Exploded Assembly View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (35).png" alt="Front View">
+          <div class="img-label">3D Model — Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 144359.jpg" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-4')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="project-card reveal" data-id="5" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 05</div>
+          <div class="project-title" contenteditable="false">Mobile Waste Trolley</div>
+          <div class="project-desc" contenteditable="false">Stainless steel mobile dustbin on heavy-duty caster wheels with circular top opening and side handles. Full exploded view and dimensioned engineering drawing.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">Exploded View</span><span class="tag">Kitchen Equipment</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-5">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (29).png" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (30).png" alt="Front View">
+          <div class="img-label">3D Model — Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (32).png" alt="Exploded View">
+          <div class="img-label">Exploded Assembly View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (49).png" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-5')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 6 -->
+    <div class="project-card reveal" data-id="6" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 06</div>
+          <div class="project-title" contenteditable="false">Centrifugal Fan Housing</div>
+          <div class="project-desc" contenteditable="false">Enclosed centrifugal blower housing assembly with rectangular body, internal squirrel-cage fan, access panels and pipe connections. Dimensioned multi-view drawing with BOM.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">Mechanical Assembly</span><span class="tag">HVAC</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-6">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (40).png" alt="3D Assembly">
+          <div class="img-label">3D Model — Assembly</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (41).png" alt="Exploded View">
+          <div class="img-label">Exploded View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (42).png" alt="Top View">
+          <div class="img-label">Top View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (43).png" alt="Front View">
+          <div class="img-label">Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (50).png" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-6')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 7 -->
+    <div class="project-card reveal" data-id="7" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 07</div>
+          <div class="project-title" contenteditable="false">Perforated Mesh Storage Box</div>
+          <div class="project-desc" contenteditable="false">Large-scale perforated mesh storage box (1100×1100×1200 mm) with stainless steel base plate. Engineering drawing includes flat pattern, bending detail and isometric view.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">Flat Pattern</span><span class="tag">Industrial Storage</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-7">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (73).png" alt="3D Model">
+          <div class="img-label">3D Model</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 142720.jpg" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-7')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 8 -->
+    <div class="project-card reveal" data-id="8" draggable="false">
+      <div class="card-controls">
+        <span class="drag-handle">⠿ drag</span>
+        <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+        <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+        <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+      </div>
+      <div class="project-card-header">
+        <div style="width:100%">
+          <div class="project-number">Project 08</div>
+          <div class="project-title" contenteditable="false">Wall-Hung Cabinet — Powder Coated</div>
+          <div class="project-desc" contenteditable="false">Three-door wall-hung overhead cabinet in powder-coated finish with precision gap tolerances (±0.50 mm). Full engineering drawing with section view and isometric.</div>
+          <div class="project-tags"><span class="tag">SolidWorks</span><span class="tag">Sheet Metal</span><span class="tag">GD&T Tolerances</span><span class="tag">Surface Finish</span></div>
+        </div>
+      </div>
+      <div class="image-grid" id="grid-8">
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (56).png" alt="Front View">
+          <div class="img-label">Front View</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot (58).png" alt="3D Isometric">
+          <div class="img-label">3D Model — Isometric</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="img-slot" onclick="openLightbox(this)">
+          <img src="Screenshot 2026-06-06 135505.png" alt="Engineering Drawing">
+          <div class="img-label">Engineering Drawing</div>
+          <div class="img-controls">
+            <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+            <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+            <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+          </div>
+        </div>
+        <div class="add-img-slot" onclick="addNewImg('grid-8')">
+          <span class="plus">+</span><span>Add Image</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /projects-container -->
+
+  <button class="add-project-btn" onclick="addNewProject()">+ Add New Project</button>
+
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-header reveal">
+    <h2>About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid reveal-stagger">
+    <div class="about-card">
+      <h3>Background</h3>
+      <p>B.E. Mechatronics Engineering graduate from MUET Jamshoro (December 2025). Currently working as Mechanical Design & QA Engineer at Eastern Trading Corporation (Kitchen Studio), Karachi — designing commercial kitchen equipment using SolidWorks.</p>
+    </div>
+    <div class="about-card">
+      <h3>Technical Skills</h3>
+      <ul>
+        <li>SolidWorks — Solid Modelling, Sheet Metal, Assembly</li>
+        <li>Engineering Drawing & GD&T</li>
+        <li>BOM Development & DFM</li>
+        <li>Dimensional Inspection & QA</li>
+        <li>PLC basics, IoT (ESP32)</li>
+      </ul>
+    </div>
+    <div class="about-card">
+      <h3>Education & Certifications</h3>
+      <ul>
+        <li>B.E. Mechatronics — MUET Jamshoro, 2025</li>
+        <li>ISO 9001 Quality Management (Foundational)</li>
+        <li>ISO 45001 Occupational Health & Safety</li>
+        <li>PCAA Internship — Aviation sector</li>
+      </ul>
+    </div>
+    <div class="about-card">
+      <h3>Contact</h3>
+      <ul>
+        <li>📧 manthar020@gmail.com</li>
+        <li>📞 +92-343-1337761</li>
+        <li>🔗 linkedin.com/in/engr-manthar-ali</li>
+        <li>📍 Karachi, Pakistan</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="section-header reveal">
+    <h2>Get in Touch</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-bar reveal">
+    <div>
+      <h3>Open to New Opportunities</h3>
+      <p>Mechanical Design, Automation, CAD, Industrial & QA/QC roles — Pakistan & GCC</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:manthar020@gmail.com" class="contact-link primary">Email Me</a>
+      <a href="https://linkedin.com/in/engr-manthar-ali" target="_blank" class="contact-link secondary">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Manthar Ali — Mechatronics Engineer &amp; CAD Designer, Karachi, Pakistan
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Hidden file inputs -->
+<input type="file" class="file-upload-input" id="file-replace" accept="image/*">
+<input type="file" class="file-upload-input" id="file-add" accept="image/*">
+<input type="file" class="file-upload-input" id="file-before" accept="image/*">
+
+<script>
+let editMode = false;
+let projectCounter = 9;
+let currentReplaceSlot = null;
+let currentAddGrid = null;
+let currentBeforeSlot = null;
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const btn = document.getElementById('toggle-edit');
+  const container = document.getElementById('projects-container');
+  if (editMode) {
+    btn.textContent = 'Disable Editing';
+    btn.classList.add('active');
+    container.classList.add('edit-mode-global');
+    document.querySelectorAll('.project-card').forEach(c => {
+      c.classList.add('edit-mode');
+      c.setAttribute('draggable','true');
+    });
+    document.querySelectorAll('.project-title,.project-desc').forEach(el => el.setAttribute('contenteditable','true'));
+    setupDrag();
+  } else {
+    btn.textContent = 'Enable Editing';
+    btn.classList.remove('active');
+    container.classList.remove('edit-mode-global');
+    document.querySelectorAll('.project-card').forEach(c => {
+      c.classList.remove('edit-mode');
+      c.setAttribute('draggable','false');
+    });
+    document.querySelectorAll('.project-title,.project-desc').forEach(el => el.setAttribute('contenteditable','false'));
+    renumberProjects();
+  }
+}
+
+function renumberProjects() {
+  document.querySelectorAll('.project-card').forEach((c,i) => {
+    const num = c.querySelector('.project-number');
+    if(num) num.textContent = 'Project ' + String(i+1).padStart(2,'0');
+  });
+}
+
+function moveCard(btn, dir) {
+  const card = btn.closest('.project-card');
+  const container = card.parentElement;
+  const cards = [...container.querySelectorAll('.project-card')];
+  const idx = cards.indexOf(card);
+  if (dir === -1 && idx > 0) container.insertBefore(card, cards[idx-1]);
+  else if (dir === 1 && idx < cards.length-1) container.insertBefore(cards[idx+1], card);
+  renumberProjects();
+}
+
+function deleteCard(btn) {
+  if (!confirm('Delete this project?')) return;
+  btn.closest('.project-card').remove();
+  renumberProjects();
+}
+
+function openLightbox(slot) {
+  if (editMode) return;
+  const img = slot.querySelector('img');
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+
+function replaceImg(btn) {
+  currentReplaceSlot = btn.closest('.img-slot');
+  document.getElementById('file-replace').click();
+}
+document.getElementById('file-replace').addEventListener('change', function() {
+  if (!this.files[0] || !currentReplaceSlot) return;
+  const url = URL.createObjectURL(this.files[0]);
+  currentReplaceSlot.querySelector('img').src = url;
+  this.value = '';
+});
+
+function deleteImg(btn) {
+  if (!confirm('Remove this image?')) return;
+  btn.closest('.img-slot').remove();
+}
+
+function addNewImg(gridId) {
+  currentAddGrid = document.getElementById(gridId);
+  document.getElementById('file-add').click();
+}
+document.getElementById('file-add').addEventListener('change', function() {
+  if (!this.files[0] || !currentAddGrid) return;
+  const url = URL.createObjectURL(this.files[0]);
+  const addSlot = currentAddGrid.querySelector('.add-img-slot');
+  const slot = makeImgSlot(url, 'New Image');
+  currentAddGrid.insertBefore(slot, addSlot);
+  this.value = '';
+});
+
+function addImgBefore(btn) {
+  currentBeforeSlot = btn.closest('.img-slot');
+  document.getElementById('file-before').click();
+}
+document.getElementById('file-before').addEventListener('change', function() {
+  if (!this.files[0] || !currentBeforeSlot) return;
+  const url = URL.createObjectURL(this.files[0]);
+  const slot = makeImgSlot(url, 'New Image');
+  currentBeforeSlot.parentElement.insertBefore(slot, currentBeforeSlot);
+  this.value = '';
+});
+
+function makeImgSlot(src, label) {
+  const div = document.createElement('div');
+  div.className = 'img-slot';
+  div.onclick = function(){ openLightbox(this); };
+  div.innerHTML = `<img src="${src}" alt="${label}"><div class="img-label">${label}</div>
+  <div class="img-controls">
+    <button class="img-btn" onclick="event.stopPropagation();replaceImg(this)">Replace</button>
+    <button class="img-btn" onclick="event.stopPropagation();addImgBefore(this)">+ Before</button>
+    <button class="img-btn" onclick="event.stopPropagation();deleteImg(this)">✕</button>
+  </div>`;
+  if(editMode) div.querySelector('.img-controls').style.display='flex';
+  return div;
+}
+
+function addNewProject() {
+  const n = projectCounter++;
+  const gridId = 'grid-' + n;
+  const card = document.createElement('div');
+  card.className = 'project-card edit-mode';
+  card.setAttribute('draggable','true');
+  card.dataset.id = n;
+  card.innerHTML = `
+    <div class="card-controls">
+      <span class="drag-handle">⠿ drag</span>
+      <button class="card-btn" onclick="moveCard(this,-1)">↑ Move Up</button>
+      <button class="card-btn" onclick="moveCard(this,1)">↓ Move Down</button>
+      <button class="card-btn danger" onclick="deleteCard(this)">Delete</button>
+    </div>
+    <div class="project-card-header">
+      <div style="width:100%">
+        <div class="project-number">Project</div>
+        <div class="project-title" contenteditable="true">New Project Title</div>
+        <div class="project-desc" contenteditable="true">Add a short description of this project here.</div>
+        <div class="project-tags"><span class="tag">SolidWorks</span></div>
+      </div>
+    </div>
+    <div class="image-grid" id="${gridId}">
+      <div class="add-img-slot" onclick="addNewImg('${gridId}')">
+        <span class="plus">+</span>
+        <span>Add Image</span>
+      </div>
+    </div>`;
+  const addBtn = document.querySelector('.add-project-btn');
+  document.getElementById('projects-container').insertBefore(card, addBtn);
+  renumberProjects();
+  setupDrag();
+}
+
+// DRAG & DROP
+let dragSrc = null;
+function setupDrag() {
+  document.querySelectorAll('.project-card[draggable="true"]').forEach(card => {
+    card.ondragstart = e => { dragSrc = card; card.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; };
+    card.ondragend = () => { card.classList.remove('dragging'); document.querySelectorAll('.project-card').forEach(c=>c.classList.remove('drag-over')); renumberProjects(); };
+    card.ondragover = e => { e.preventDefault(); card.classList.add('drag-over'); };
+    card.ondragleave = () => card.classList.remove('drag-over');
+    card.ondrop = e => {
+      e.preventDefault();
+      if (dragSrc && dragSrc !== card) {
+        const container = card.parentElement;
+        const cards = [...container.querySelectorAll('.project-card')];
+        const srcIdx = cards.indexOf(dragSrc);
+        const tgtIdx = cards.indexOf(card);
+        if (srcIdx < tgtIdx) container.insertBefore(dragSrc, card.nextSibling);
+        else container.insertBefore(dragSrc, card);
+      }
+      card.classList.remove('drag-over');
+    };
+  });
+}
+</script>
+
+<script>
+/* ── HERO ANIMATION on load ── */
+window.addEventListener('load', () => {
+  document.querySelector('.hero').closest('section') || document.querySelector('.hero');
+  document.body.classList.add('hero-anim-done');
+});
+
+/* ── SCROLL REVEAL — sections, cards, headers ── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealObserver.observe(el));
+
+/* ── IMAGE STAGGER inside cards ── */
+const imgObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const grid = entry.target;
+      const slots = grid.querySelectorAll('.img-slot');
+      slots.forEach((slot, i) => {
+        setTimeout(() => slot.classList.add('img-visible'), i * 100);
+      });
+      imgObserver.unobserve(grid);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.image-grid').forEach(grid => imgObserver.observe(grid));
+
+/* re-observe new cards added dynamically */
+const origAddNewProject = window.addNewProject;
+const origToggle = window.toggleEditMode;
+
+const reObserve = () => {
+  document.querySelectorAll('.reveal:not(.observed), .reveal-stagger:not(.observed)').forEach(el => {
+    revealObserver.observe(el);
+    el.classList.add('observed');
+  });
+  document.querySelectorAll('.image-grid').forEach(g => imgObserver.observe(g));
+};
+
+const _origAdd = addNewProject;
+window.addNewProject = function() {
+  _origAdd();
+  setTimeout(reObserve, 50);
+};
+</script>
+</body>
+</html>
